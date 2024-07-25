@@ -1,0 +1,42 @@
+package br.edu.ufage.topicos.catalogo.controlador;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.edu.ufage.topicos.catalogo.basica.Produto;
+import br.edu.ufage.topicos.catalogo.controlador.requisicao.ProdutoRequest;
+import br.edu.ufage.topicos.catalogo.controlador.resposta.ProdutoResponse;
+import br.edu.ufage.topicos.catalogo.fachada.Catalogo;
+import jakarta.validation.Valid;
+
+@RestController
+public class ControladorProduto {
+    @Autowired
+    private Catalogo catalogo;
+
+    @PostMapping("/produto")
+    Produto cadastrarProduto (@Valid @RequestBody ProdutoRequest newObj) {
+        return catalogo.salvarProduto(newObj.converterParaClasseBasica());
+    }
+
+    @GetMapping("/produto")
+    List<ProdutoResponse> listarProdutos() {
+        List<ProdutoResponse> response = new ArrayList<ProdutoResponse>();
+        for(Produto p : catalogo.listarProdutos())
+            response.add(new ProdutoResponse(p));
+        return response;
+    }
+
+    @GetMapping("/produto/{id}")
+    ProdutoResponse carregarProduto(@PathVariable long id) {
+        return new ProdutoResponse(catalogo.encontrarProdutoId(id));
+    }
+
+}

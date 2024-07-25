@@ -15,7 +15,7 @@ public interface InterfaceCadastroProduto {
 
 	List<Produto> listarProdutos();
 
-	Optional<Produto> encontrarProdutoId(Long id);
+	Produto encontrarProdutoId(Long id);
 
 	void apagarProduto(Long id);
 
