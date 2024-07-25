@@ -17,6 +17,7 @@ public class Catalogo {
 	private InterfaceCadastroCategoria cadastroCategoria;
 	@Autowired
 	private InterfaceCadastroProduto cadastroProduto;
+
 	public Categoria salvarCategoria(Categoria entity) {
 		return cadastroCategoria.salvarCategoria(entity);
 	}
@@ -44,7 +45,7 @@ public class Catalogo {
 	public List<Produto> listarProdutos() {
 		return cadastroProduto.listarProdutos();
 	}
-	public Optional<Produto> encontrarProdutoId(Long id) {
+	public Produto encontrarProdutoId(Long id) {
 		return cadastroProduto.encontrarProdutoId(id);
 	}
 	public void apagarProduto(Long id) {
@@ -53,7 +54,5 @@ public class Catalogo {
 	public void apagarProduto(Produto entity) {
 		cadastroProduto.apagarProduto(entity);
 	}
-	
-
 	
 }

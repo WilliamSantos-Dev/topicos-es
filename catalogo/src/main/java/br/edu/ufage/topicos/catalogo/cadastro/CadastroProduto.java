@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.edu.ufage.topicos.catalogo.basica.Categoria;
 import br.edu.ufage.topicos.catalogo.basica.Produto;
 import br.edu.ufage.topicos.catalogo.repositorio.RepositorioProduto;
 
@@ -35,8 +36,13 @@ public class CadastroProduto implements InterfaceCadastroProduto {
 	}
 
 	@Override
-	public Optional<Produto> encontrarProdutoId(Long id) {
-		return repositorioProduto.findById(id);
+	public Produto encontrarProdutoId(Long id) {
+		Optional<Produto> optional = repositorioProduto.findById(id);
+		if(optional.isPresent()) {
+			return optional.get();
+		} else {
+			throw new ObjetoNaoEncontradoException("Não existe produto com o id: " + id);
+		}
 	}
 
 	@Override
