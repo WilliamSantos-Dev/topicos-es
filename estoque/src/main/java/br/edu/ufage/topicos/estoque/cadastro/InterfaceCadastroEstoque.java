@@ -17,5 +17,5 @@ public interface InterfaceCadastroEstoque {
 
     void apagarEstoque(Estoque entity);
 
-    
+    Estoque encontrarEstoquePorProdutoEArmazem(long produtoId, long armazemId);
 }

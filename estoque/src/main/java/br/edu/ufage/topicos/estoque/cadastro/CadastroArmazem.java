@@ -30,8 +30,13 @@ public class CadastroArmazem implements InterfaceCadastroArmazem {
     }
 
     @Override
-    public Optional<Armazem> encontrarArmazemId(Long id) {
-        return repositorioArmazem.findById(id);
+    public Armazem encontrarArmazemId(Long id) {
+        Optional<Armazem> optional = repositorioArmazem.findById(id);
+		if(optional.isPresent()) {
+			return optional.get();
+		} else {
+			throw new ObjetoNaoEncontradoException("Não existe produto com o id: " + id);
+		}
     }
 
     @Override
