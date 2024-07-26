@@ -42,4 +42,9 @@ public class CadastroEstoque implements InterfaceCadastroEstoque {
     public void apagarEstoque(Estoque entity) {
         repositorioEstoque.delete(entity);
     }
+
+    @Override
+    public Estoque encontrarEstoquePorProdutoEArmazem(long produtoId, long armazemId) {
+        return repositorioEstoque.findByProdutoIdAndArmazem_id(produtoId, armazemId);
+    }
 }
