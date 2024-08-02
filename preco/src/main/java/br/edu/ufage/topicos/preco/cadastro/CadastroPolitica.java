@@ -1,27 +1,18 @@
 package br.edu.ufage.topicos.preco.cadastro;
 
-import br.edu.ufage.topicos.preco.basica.Politica;
-import br.edu.ufage.topicos.preco.repositorio.RepositorioPolitica;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import br.edu.ufage.topicos.preco.basica.Politica;
+import br.edu.ufage.topicos.preco.repositorio.RepositorioPolitica;
 
 @Service
 public class CadastroPolitica implements InterfaceCadastroPolitica {
+
     @Autowired
     private RepositorioPolitica repositorioPolitica;
-
-    @Override
-    public List<Politica> listarPoliticasPorTipo(String tipo) {
-        return repositorioPolitica.findByTipoContainingIgnoreCase(tipo);
-    }
-
-    @Override
-    public Politica salvarPolitica(Politica entity) {
-        return repositorioPolitica.save(entity)
-    }
 
     @Override
     public List<Politica> listarPoliticas() {
@@ -29,17 +20,17 @@ public class CadastroPolitica implements InterfaceCadastroPolitica {
     }
 
     @Override
-    public Optional<Politica> encontrarPolitica(Long id) {
-        return repositorioPolitica.findById(id);
+    public Politica obterPoliticaPorId(Long id) {
+        return repositorioPolitica.findById(id).orElse(null);
+    }
+
+    @Override
+    public Politica salvarPolitica(Politica politica) {
+        return repositorioPolitica.save(politica);
     }
 
     @Override
     public void apagarPolitica(Long id) {
         repositorioPolitica.deleteById(id);
-    }
-
-    @Override
-    public void apagarPolitica(Politica entity) {
-        repositorioPolitica.delete(entity);
     }
 }

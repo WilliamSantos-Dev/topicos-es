@@ -1,8 +1,8 @@
 package br.edu.ufage.topicos.preco.cadastro;
 
-import br.edu.ufage.topicos.preco.basica.Preco;
-
 import java.util.List;
+
+import br.edu.ufage.topicos.preco.basica.Preco;
 
 public interface InterfaceCadastroPreco {
     List<Preco> listarPrecosPorProdutoId(Long produtoId);
