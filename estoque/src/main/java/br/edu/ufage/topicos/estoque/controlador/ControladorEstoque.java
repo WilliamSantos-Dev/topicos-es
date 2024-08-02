@@ -32,6 +32,8 @@ public class ControladorEstoque {
         Armazem armazem = estoque.encontrarArmazemId(newObj.getArmazem_id());
         estoqueobj.setArmazem(armazem);
 
+        
+
         return estoque.adicionarEstoque(estoqueobj);
     }
 

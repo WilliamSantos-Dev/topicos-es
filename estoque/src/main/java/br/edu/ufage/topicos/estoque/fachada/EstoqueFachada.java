@@ -8,7 +8,7 @@ import br.edu.ufage.topicos.estoque.basica.Armazem;
 import br.edu.ufage.topicos.estoque.basica.Estoque;
 import br.edu.ufage.topicos.estoque.cadastro.InterfaceCadastroArmazem;
 import br.edu.ufage.topicos.estoque.cadastro.InterfaceCadastroEstoque;
-import br.edu.ufage.topicos.estoque.cadastro.ObjetoNaoEncontradoException;
+import br.edu.ufage.topicos.estoque.fachada.exceção.ProdutoDuplicadoException;
 
 @Service
 public class EstoqueFachada {
@@ -44,7 +44,7 @@ public class EstoqueFachada {
         Estoque estoqueExistente = cadastroEstoque.encontrarEstoquePorProdutoEArmazem(entity.getProdutoId(), entity.getArmazem().getId());
 
         if (estoqueExistente != null) {
-            throw new RuntimeException("Estoque já existe para o produto e armazém informados");
+            throw new ProdutoDuplicadoException("Estoque já existe para o produto e armazém informados");
         }
 
         return cadastroEstoque.salvarEstoque(entity);
