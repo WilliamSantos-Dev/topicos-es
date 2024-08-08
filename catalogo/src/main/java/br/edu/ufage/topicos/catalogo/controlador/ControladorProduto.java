@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ufage.topicos.catalogo.basica.Categoria;
 import br.edu.ufage.topicos.catalogo.basica.Produto;
-import br.edu.ufage.topicos.catalogo.controlador.requisicao.CategoriaRequest;
 import br.edu.ufage.topicos.catalogo.controlador.requisicao.ProdutoRequest;
 import br.edu.ufage.topicos.catalogo.controlador.resposta.ProdutoResponse;
 import br.edu.ufage.topicos.catalogo.fachada.Catalogo;
@@ -30,7 +28,7 @@ public class ControladorProduto {
     @PostMapping("/produto")
     Produto cadastrarProduto(@Valid @RequestBody ProdutoRequest newObj) {
         Produto produto = catalogo.salvarProduto(newObj.converterParaClasseBasica());
-        rabbitTemplate.convertAndSend("produtoQueue", produto);
+        rabbitTemplate.convertAndSend("produtoQueue", produto.getId());
         return produto;
     }
 

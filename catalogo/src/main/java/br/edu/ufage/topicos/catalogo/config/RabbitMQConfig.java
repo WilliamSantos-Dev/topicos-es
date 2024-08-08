@@ -11,12 +11,12 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue categoriaQueue() {
-        return new Queue("categoriaQueue", false);
+        return new Queue("categoriaQueue", true);
     }
 
     @Bean
     public Queue produtoQueue() {
-        return new Queue("produtoQueue", false);
+        return new Queue("produtoQueue", true);
     }
 
     @Bean

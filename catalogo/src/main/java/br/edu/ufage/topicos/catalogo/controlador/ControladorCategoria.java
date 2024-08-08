@@ -32,7 +32,7 @@ public class ControladorCategoria {
 	@PostMapping("/categoria")
 	Categoria cadastrarCategoria(@Valid @RequestBody CategoriaRequest newObj) {
 		Categoria categoria = catalogo.salvarCategoria(newObj.converterParaClasseBasica());
-		rabbitTemplate.convertAndSend("categoriaQueue", categoria);
+		rabbitTemplate.convertAndSend("categoriaQueue", categoria.getId());
 		return categoria;
 	}
 
