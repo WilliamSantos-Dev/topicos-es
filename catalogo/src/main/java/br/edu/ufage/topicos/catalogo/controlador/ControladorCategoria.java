@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,25 +22,28 @@ import jakarta.validation.Valid;
 public class ControladorCategoria {
 	@Autowired
 	private Catalogo catalogo;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	
+
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
+
 	@PostMapping("/categoria")
-	Categoria cadastrarCategoria (@Valid @RequestBody CategoriaRequest newObj) {
-		return catalogo.salvarCategoria(newObj.converterParaClasseBasica());
+	Categoria cadastrarCategoria(@Valid @RequestBody CategoriaRequest newObj) {
+		Categoria categoria = catalogo.salvarCategoria(newObj.converterParaClasseBasica());
+		rabbitTemplate.convertAndSend("categoriaQueue", categoria.getId());
+		return categoria;
 	}
-	
-	
+
 	@GetMapping("/categoria")
 	List<CategoriaResponse> listarCategorias() {
 		List<CategoriaResponse> response = new ArrayList<CategoriaResponse>();
-		for(Categoria c : catalogo.listarCategorias())
+		for (Categoria c : catalogo.listarCategorias())
 			response.add(new CategoriaResponse(c));
 		return response;
 	}
-	
+
 	@GetMapping("/categoria/{id}")
 	CategoriaResponse carregarCategoria(@PathVariable long id) {
 		return new CategoriaResponse(catalogo.encontrarCategoria(id));

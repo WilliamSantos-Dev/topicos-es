@@ -3,6 +3,7 @@ package br.edu.ufage.topicos.catalogo.controlador;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,15 +22,20 @@ public class ControladorProduto {
     @Autowired
     private Catalogo catalogo;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     @PostMapping("/produto")
-    Produto cadastrarProduto (@Valid @RequestBody ProdutoRequest newObj) {
-        return catalogo.salvarProduto(newObj.converterParaClasseBasica());
+    Produto cadastrarProduto(@Valid @RequestBody ProdutoRequest newObj) {
+        Produto produto = catalogo.salvarProduto(newObj.converterParaClasseBasica());
+        rabbitTemplate.convertAndSend("produtoQueue", produto.getId());
+        return produto;
     }
 
     @GetMapping("/produto")
     List<ProdutoResponse> listarProdutos() {
         List<ProdutoResponse> response = new ArrayList<ProdutoResponse>();
-        for(Produto p : catalogo.listarProdutos())
+        for (Produto p : catalogo.listarProdutos())
             response.add(new ProdutoResponse(p));
         return response;
     }
