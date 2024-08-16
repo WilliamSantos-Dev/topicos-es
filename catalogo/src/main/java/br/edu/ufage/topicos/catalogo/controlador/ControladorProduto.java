@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufage.topicos.catalogo.basica.Categoria;
 import br.edu.ufage.topicos.catalogo.basica.Produto;
 import br.edu.ufage.topicos.catalogo.controlador.requisicao.ProdutoRequest;
 import br.edu.ufage.topicos.catalogo.controlador.resposta.ProdutoResponse;
 import br.edu.ufage.topicos.catalogo.fachada.Catalogo;
+import br.edu.ufage.topicos.catalogo.message.Event;
+import br.edu.ufage.topicos.catalogo.message.Publisher;
 import jakarta.validation.Valid;
 
 @RestController
@@ -23,12 +26,13 @@ public class ControladorProduto {
     private Catalogo catalogo;
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private Publisher publisher;
 
     @PostMapping("/produto")
     Produto cadastrarProduto(@Valid @RequestBody ProdutoRequest newObj) {
         Produto produto = catalogo.salvarProduto(newObj.converterParaClasseBasica());
-        rabbitTemplate.convertAndSend("produtoQueue", produto.getId());
+        Event<Long, Integer> event = new Event<>(Event.Type.CREATE, produto.getId(), 2);
+        publisher.sendEvent(event);
         return produto;
     }
 

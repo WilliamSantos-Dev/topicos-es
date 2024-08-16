@@ -16,6 +16,8 @@ import br.edu.ufage.topicos.catalogo.basica.Categoria;
 import br.edu.ufage.topicos.catalogo.controlador.requisicao.CategoriaRequest;
 import br.edu.ufage.topicos.catalogo.controlador.resposta.CategoriaResponse;
 import br.edu.ufage.topicos.catalogo.fachada.Catalogo;
+import br.edu.ufage.topicos.catalogo.message.Event;
+import br.edu.ufage.topicos.catalogo.message.Publisher;
 import jakarta.validation.Valid;
 
 @RestController
@@ -27,12 +29,11 @@ public class ControladorCategoria {
 	private ModelMapper modelMapper;
 
 	@Autowired
-	private RabbitTemplate rabbitTemplate;
+	private Publisher publisher;
 
 	@PostMapping("/categoria")
 	Categoria cadastrarCategoria(@Valid @RequestBody CategoriaRequest newObj) {
 		Categoria categoria = catalogo.salvarCategoria(newObj.converterParaClasseBasica());
-		rabbitTemplate.convertAndSend("categoriaQueue", categoria.getId());
 		return categoria;
 	}
 
