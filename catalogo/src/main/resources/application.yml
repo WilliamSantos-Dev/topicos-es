@@ -1,5 +1,5 @@
 spring.application.name: catalogo
-server.port: 8084
+server.port: 8083
 
 spring:
   datasource:
@@ -12,8 +12,21 @@ spring:
       ddl-auto: update
     show-sql: true
     database: postgresql
+  cloud:
+    stream:
+      default-binder: rabbit
+      default-content-type: application/json
+      bindings:
+        product-out-0:
+          destination: product
+          content-type: application/json
+
   rabbitmq:
     host: 127.0.0.1
     port: 5672
     username: guest
     password: guest
+  logging:
+    level:
+      org.springframework.cloud.stream: DEBUG
+      org.springframework.context: DEBUG
