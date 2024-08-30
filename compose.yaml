@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+  catalogo:
+    build: catalogo
+    depends_on:
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - 8080:8080
+  
+  estoque:
+    build: estoque
+    depends_on:
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  
+  preco:
+    build: preco
+    depends_on:
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  
+  message:
+     image: rabbitmq:3-management
+     ports: 
+       - 5672:5672
+       - 15672:15672

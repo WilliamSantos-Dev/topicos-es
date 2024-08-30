@@ -1,14 +1,23 @@
 spring.application.name: preco
-server.port: 8084
+server.port: 8085
 
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:5432/preco
-    username: topicos
-    password: topicos
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/postgres
+    username: postgres
+    password: postgres
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     database: postgresql
+
+---
+server.port: 8080
+spring:
+  config.activate.on-profile: docker
+  datasource:
+    url: jdbc:postgresql://db:5432/postgres
+  rabbitmq:
+    host: message
