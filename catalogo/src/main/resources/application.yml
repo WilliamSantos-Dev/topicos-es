@@ -4,7 +4,7 @@ server.port: 8083
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:5432/postgres
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/postgres
     username: postgres
     password: postgres
   jpa:
@@ -22,7 +22,7 @@ spring:
           content-type: application/json
 
   rabbitmq:
-    host: 127.0.0.1
+    host: localhost
     port: 5672
     username: guest
     password: guest
@@ -30,3 +30,12 @@ spring:
     level:
       org.springframework.cloud.stream: DEBUG
       org.springframework.context: DEBUG
+
+---
+server.port: 8080
+spring:
+  config.activate.on-profile: docker
+  datasource:
+    url: jdbc:postgresql://db:5432/postgres
+  rabbitmq:
+    host: message
