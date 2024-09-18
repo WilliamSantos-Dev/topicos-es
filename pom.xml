@@ -7,6 +7,7 @@
   <name>ecommerce</name>
   
   <modules>
+    <module>auth</module>
   	<module>catalogo</module>
   	<module>estoque</module>
   	<module>preco</module>
