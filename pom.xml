@@ -10,5 +10,7 @@
   	<module>catalogo</module>
   	<module>estoque</module>
   	<module>preco</module>
+    <module>discovery</module>
+    <module>gateway</module>
   </modules>
 </project>

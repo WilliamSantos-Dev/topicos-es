@@ -5,14 +5,24 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
 
+  discovery:
+    build: discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  gateway:
+    build: gateway
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
   catalogo:
     build: catalogo
     depends_on:
       - db
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - 8080:8080
   
   estoque:
     build: estoque
