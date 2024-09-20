@@ -21,6 +21,7 @@ services:
     build: catalogo
     depends_on:
       - db
+      - message
     environment:
       - SPRING_PROFILES_ACTIVE=docker
   
