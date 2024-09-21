@@ -59,7 +59,10 @@ services:
     ports:
       - "8089:8080"
     volumes:
-      - keycloak-data:/opt/keycloak/data
+      - type: bind
+        source: ./keycloak-data
+        target: /opt/keycloak/data
+
     command:
       [ "start-dev", "--hostname", "http://localhost:8089" ]
 
