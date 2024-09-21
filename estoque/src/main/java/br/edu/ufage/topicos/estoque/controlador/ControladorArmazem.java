@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufage.topicos.estoque.basica.Armazem;
@@ -20,9 +20,10 @@ import br.edu.ufage.topicos.estoque.fachada.EstoqueFachada;
 import jakarta.validation.Valid;
 
 @RestController
+@RequestMapping("/estoque/armazem")
 public class ControladorArmazem {
-    
-     @Autowired
+
+    @Autowired
     private EstoqueFachada estoque;
 
     @PostMapping("/estoque/armazem")
@@ -33,9 +34,9 @@ public class ControladorArmazem {
     @GetMapping("/estoque/armazem")
     List<ArmazemResponse> listarArmazem() {
         List<ArmazemResponse> response = new ArrayList<ArmazemResponse>();
-		for(Armazem a : estoque.listarArmazens())
-			response.add(new ArmazemResponse(a));
-		return response;
+        for (Armazem a : estoque.listarArmazens())
+            response.add(new ArmazemResponse(a));
+        return response;
     }
 
     @GetMapping("/estoque/armazem/{id}")
