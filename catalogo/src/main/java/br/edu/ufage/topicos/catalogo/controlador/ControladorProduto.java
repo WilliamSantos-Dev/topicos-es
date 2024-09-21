@@ -22,7 +22,7 @@ import br.edu.ufage.topicos.catalogo.message.Publisher;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/catalogo/produto")
+@RequestMapping("/catalogo/produto/")
 public class ControladorProduto {
     @Autowired
     private Catalogo catalogo;
@@ -46,7 +46,7 @@ public class ControladorProduto {
         return response;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     ProdutoResponse carregarProduto(@PathVariable long id) {
         return new ProdutoResponse(catalogo.encontrarProdutoId(id));
     }

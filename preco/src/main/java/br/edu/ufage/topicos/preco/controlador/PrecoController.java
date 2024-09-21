@@ -17,7 +17,7 @@ import br.edu.ufage.topicos.preco.basica.Preco;
 import br.edu.ufage.topicos.preco.cadastro.InterfaceCadastroPreco;
 
 @RestController
-@RequestMapping("/preco")
+@RequestMapping("/preco/precos/")
 public class PrecoController {
 
     @Autowired
@@ -28,12 +28,12 @@ public class PrecoController {
         return cadastroPreco.listarPrecos();
     }
 
-    @GetMapping("/produto/{produtoId}")
+    @GetMapping("preco/produto/{produtoId}")
     public List<Preco> listarPrecosPorProduto(@PathVariable Long produtoId) {
         return cadastroPreco.listarPrecosPorProdutoId(produtoId);
     }
 
-    @GetMapping("/politica/{politicaId}")
+    @GetMapping("preco/politica/{politicaId}")
     public List<Preco> listarPrecosPorPolitica(@PathVariable Long politicaId) {
         return cadastroPreco.listarPrecosPorPolitica(politicaId);
     }
@@ -43,7 +43,7 @@ public class PrecoController {
         return cadastroPreco.salvarPreco(preco);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("preco/{id}")
     public ResponseEntity<Preco> atualizarPreco(@PathVariable Long id, @RequestBody Preco precoAtualizado) {
         Preco precoExistente = cadastroPreco.listarPrecosPorProdutoId(id).stream().findFirst().orElse(null);
         if (precoExistente == null) {
@@ -54,7 +54,7 @@ public class PrecoController {
         return ResponseEntity.ok(precoSalvo);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("preco/{id}")
     public ResponseEntity<Void> apagarPreco(@PathVariable Long id) {
         cadastroPreco.apagarPreco(id);
         return ResponseEntity.noContent().build();

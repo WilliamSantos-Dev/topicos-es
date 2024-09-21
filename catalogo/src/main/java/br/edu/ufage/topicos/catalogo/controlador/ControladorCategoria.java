@@ -22,7 +22,7 @@ import br.edu.ufage.topicos.catalogo.message.Publisher;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/catalogo/categoria")
+@RequestMapping("/catalogo/categoria/")
 public class ControladorCategoria {
 	@Autowired
 	private Catalogo catalogo;
@@ -47,7 +47,7 @@ public class ControladorCategoria {
 		return response;
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	CategoriaResponse carregarCategoria(@PathVariable long id) {
 		return new CategoriaResponse(catalogo.encontrarCategoria(id));
 	}
