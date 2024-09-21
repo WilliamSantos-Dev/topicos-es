@@ -17,7 +17,7 @@ import br.edu.ufage.topicos.preco.basica.Politica;
 import br.edu.ufage.topicos.preco.cadastro.InterfaceCadastroPolitica;
 
 @RestController
-@RequestMapping("/preco/politicas")
+@RequestMapping("/preco/politicas/")
 public class PoliticaController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class PoliticaController {
         return cadastroPolitica.listarPoliticas();
     }
 
-    @GetMapping("/preco/{id}")
+    @GetMapping("preco/{id}")
     public ResponseEntity<Politica> obterPolitica(@PathVariable Long id) {
         Politica politica = cadastroPolitica.obterPoliticaPorId(id);
         if (politica == null) {
@@ -42,7 +42,7 @@ public class PoliticaController {
         return cadastroPolitica.salvarPolitica(politica);
     }
 
-    @PutMapping("/preco/{id}")
+    @PutMapping("preco/{id}")
     public ResponseEntity<Politica> atualizarPolitica(@PathVariable Long id, @RequestBody Politica politicaAtualizada) {
         Politica politicaExistente = cadastroPolitica.obterPoliticaPorId(id);
         if (politicaExistente == null) {
@@ -53,7 +53,7 @@ public class PoliticaController {
         return ResponseEntity.ok(politicaSalva);
     }
 
-    @DeleteMapping("/preco/{id}")
+    @DeleteMapping("preco/{id}")
     public ResponseEntity<Void> apagarPolitica(@PathVariable Long id) {
         cadastroPolitica.apagarPolitica(id);
         return ResponseEntity.noContent().build();

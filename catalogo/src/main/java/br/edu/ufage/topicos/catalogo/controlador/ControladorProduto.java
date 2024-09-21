@@ -22,7 +22,7 @@ import br.edu.ufage.topicos.catalogo.message.Publisher;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/catalogo/produto")
+@RequestMapping("/catalogo/produto/")
 public class ControladorProduto {
     @Autowired
     private Catalogo catalogo;
@@ -30,7 +30,7 @@ public class ControladorProduto {
     @Autowired
     private Publisher publisher;
 
-    @PostMapping("/catalogo/produto")
+    @PostMapping()
     Produto cadastrarProduto(@Valid @RequestBody ProdutoRequest newObj) {
         Produto produto = catalogo.salvarProduto(newObj.converterParaClasseBasica());
         Event<Long, Integer> event = new Event<>(Event.Type.CREATE, produto.getId(), 2);
@@ -38,7 +38,7 @@ public class ControladorProduto {
         return produto;
     }
 
-    @GetMapping("/catalogo/produto")
+    @GetMapping()
     List<ProdutoResponse> listarProdutos() {
         List<ProdutoResponse> response = new ArrayList<ProdutoResponse>();
         for (Produto p : catalogo.listarProdutos())
@@ -46,7 +46,7 @@ public class ControladorProduto {
         return response;
     }
 
-    @GetMapping("/catalogo/produto/{id}")
+    @GetMapping("{id}")
     ProdutoResponse carregarProduto(@PathVariable long id) {
         return new ProdutoResponse(catalogo.encontrarProdutoId(id));
     }

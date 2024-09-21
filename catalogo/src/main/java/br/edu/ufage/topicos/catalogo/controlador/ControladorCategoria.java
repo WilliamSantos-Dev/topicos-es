@@ -22,7 +22,7 @@ import br.edu.ufage.topicos.catalogo.message.Publisher;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/catalogo/categoria")
+@RequestMapping("/catalogo/categoria/")
 public class ControladorCategoria {
 	@Autowired
 	private Catalogo catalogo;
@@ -33,13 +33,13 @@ public class ControladorCategoria {
 	@Autowired
 	private Publisher publisher;
 
-	@PostMapping("/catalogo/categoria")
+	@PostMapping()
 	Categoria cadastrarCategoria(@Valid @RequestBody CategoriaRequest newObj) {
 		Categoria categoria = catalogo.salvarCategoria(newObj.converterParaClasseBasica());
 		return categoria;
 	}
 
-	@GetMapping("/catalogo/categoria")
+	@GetMapping()
 	List<CategoriaResponse> listarCategorias() {
 		List<CategoriaResponse> response = new ArrayList<CategoriaResponse>();
 		for (Categoria c : catalogo.listarCategorias())
@@ -47,7 +47,7 @@ public class ControladorCategoria {
 		return response;
 	}
 
-	@GetMapping("/catalogo/categoria/{id}")
+	@GetMapping("{id}")
 	CategoriaResponse carregarCategoria(@PathVariable long id) {
 		return new CategoriaResponse(catalogo.encontrarCategoria(id));
 	}

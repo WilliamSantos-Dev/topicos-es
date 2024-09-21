@@ -20,18 +20,18 @@ import br.edu.ufage.topicos.estoque.fachada.EstoqueFachada;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/estoque/armazem")
+@RequestMapping("/estoque/armazem/")
 public class ControladorArmazem {
 
     @Autowired
     private EstoqueFachada estoque;
 
-    @PostMapping("/estoque/armazem")
+    @PostMapping("")
     Armazem cadastroArmazem(@Valid @RequestBody ArmazemRequest newObj ) {
         return estoque.adicionarArmazem(newObj.converterParaClasseBasica());
     }
 
-    @GetMapping("/estoque/armazem")
+    @GetMapping("")
     List<ArmazemResponse> listarArmazem() {
         List<ArmazemResponse> response = new ArrayList<ArmazemResponse>();
         for (Armazem a : estoque.listarArmazens())
@@ -39,12 +39,12 @@ public class ControladorArmazem {
         return response;
     }
 
-    @GetMapping("/estoque/armazem/{id}")
+    @GetMapping("{id}")
     ArmazemResponse buscarArmazem(@PathVariable Long id) {
         return new ArmazemResponse(estoque.encontrarArmazemId(id));
     }
 
-    @DeleteMapping("/estoque/armazem/{id}")
+    @DeleteMapping("{id}")
     void removerArmazem(@PathVariable Long id) {
         estoque.removerArmazem(id);
     }
