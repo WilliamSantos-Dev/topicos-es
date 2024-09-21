@@ -15,50 +15,49 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
+@RequestMapping("/estoque/")
 public class ControladorEstoque {
-    
+
     @Autowired
     private EstoqueFachada estoque;
 
-
-    @PostMapping("/estoque")
-    Estoque cadastroEstoque(@Valid @RequestBody EstoqueRequest newObj ) {
+    @PostMapping()
+    Estoque cadastroEstoque(@Valid @RequestBody EstoqueRequest newObj) {
         Estoque estoqueobj = newObj.converterParaClasseBasica();
 
         Armazem armazem = estoque.encontrarArmazemId(newObj.getArmazem_id());
         estoqueobj.setArmazem(armazem);
 
-        
-
         return estoque.adicionarEstoque(estoqueobj);
     }
 
-    @GetMapping("/estoque")
+    @GetMapping()
     List<EstoqueResponse> listarEstoques() {
         List<EstoqueResponse> response = new ArrayList<EstoqueResponse>();
-		for(Estoque e : estoque.listarEstoques())
-			response.add(new EstoqueResponse(e));
-		return response;
+        for (Estoque e : estoque.listarEstoques())
+            response.add(new EstoqueResponse(e));
+        return response;
     }
 
-    @GetMapping("/estoque/produto/{id}")
+    @GetMapping("produto/{id}")
     List<EstoqueResponse> listarEstoquePorProduto(@PathVariable Long id) {
         List<EstoqueResponse> response = new ArrayList<EstoqueResponse>();
-        for(Estoque e : estoque.listarEstoquesPorProdutoId(id))
+        for (Estoque e : estoque.listarEstoquesPorProdutoId(id))
             response.add(new EstoqueResponse(e));
         return response;
     }
 
-    @GetMapping("/estoque/armazem/{id}")
+    @GetMapping("armazens/{id}")
     List<EstoqueResponse> listarEstoquePorArmazem(@PathVariable Long id) {
         List<EstoqueResponse> response = new ArrayList<EstoqueResponse>();
-        for(Estoque e : estoque.listarEstoquesPorArmazem(id))
+        for (Estoque e : estoque.listarEstoquesPorArmazem(id))
             response.add(new EstoqueResponse(e));
         return response;
     }
-    
+
 }
