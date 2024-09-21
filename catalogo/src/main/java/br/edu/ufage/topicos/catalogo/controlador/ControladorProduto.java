@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufage.topicos.catalogo.basica.Categoria;
@@ -21,6 +22,7 @@ import br.edu.ufage.topicos.catalogo.message.Publisher;
 import jakarta.validation.Valid;
 
 @RestController
+@RequestMapping("/catalogo/produto")
 public class ControladorProduto {
     @Autowired
     private Catalogo catalogo;
@@ -28,7 +30,7 @@ public class ControladorProduto {
     @Autowired
     private Publisher publisher;
 
-    @PostMapping("/produto")
+    @PostMapping()
     Produto cadastrarProduto(@Valid @RequestBody ProdutoRequest newObj) {
         Produto produto = catalogo.salvarProduto(newObj.converterParaClasseBasica());
         Event<Long, Integer> event = new Event<>(Event.Type.CREATE, produto.getId(), 2);
@@ -36,7 +38,7 @@ public class ControladorProduto {
         return produto;
     }
 
-    @GetMapping("/produto")
+    @GetMapping()
     List<ProdutoResponse> listarProdutos() {
         List<ProdutoResponse> response = new ArrayList<ProdutoResponse>();
         for (Produto p : catalogo.listarProdutos())
@@ -44,7 +46,7 @@ public class ControladorProduto {
         return response;
     }
 
-    @GetMapping("/produto/{id}")
+    @GetMapping("/{id}")
     ProdutoResponse carregarProduto(@PathVariable long id) {
         return new ProdutoResponse(catalogo.encontrarProdutoId(id));
     }

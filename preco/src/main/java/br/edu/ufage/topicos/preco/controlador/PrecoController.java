@@ -17,7 +17,7 @@ import br.edu.ufage.topicos.preco.basica.Preco;
 import br.edu.ufage.topicos.preco.cadastro.InterfaceCadastroPreco;
 
 @RestController
-@RequestMapping("/api/precos")
+@RequestMapping("/preco")
 public class PrecoController {
 
     @Autowired

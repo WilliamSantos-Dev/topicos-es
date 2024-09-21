@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufage.topicos.catalogo.basica.Categoria;
@@ -21,6 +22,7 @@ import br.edu.ufage.topicos.catalogo.message.Publisher;
 import jakarta.validation.Valid;
 
 @RestController
+@RequestMapping("/catalogo/categoria")
 public class ControladorCategoria {
 	@Autowired
 	private Catalogo catalogo;
@@ -31,13 +33,13 @@ public class ControladorCategoria {
 	@Autowired
 	private Publisher publisher;
 
-	@PostMapping("/categoria")
+	@PostMapping()
 	Categoria cadastrarCategoria(@Valid @RequestBody CategoriaRequest newObj) {
 		Categoria categoria = catalogo.salvarCategoria(newObj.converterParaClasseBasica());
 		return categoria;
 	}
 
-	@GetMapping("/categoria")
+	@GetMapping()
 	List<CategoriaResponse> listarCategorias() {
 		List<CategoriaResponse> response = new ArrayList<CategoriaResponse>();
 		for (Categoria c : catalogo.listarCategorias())
@@ -45,7 +47,7 @@ public class ControladorCategoria {
 		return response;
 	}
 
-	@GetMapping("/categoria/{id}")
+	@GetMapping("/{id}")
 	CategoriaResponse carregarCategoria(@PathVariable long id) {
 		return new CategoriaResponse(catalogo.encontrarCategoria(id));
 	}
