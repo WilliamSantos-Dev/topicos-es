@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/estoque/")
+@RequestMapping("/estoque")
 public class ControladorEstoque {
 
     @Autowired
@@ -44,7 +44,7 @@ public class ControladorEstoque {
         return response;
     }
 
-    @GetMapping("produto/{id}")
+    @GetMapping("/produto/{id}")
     List<EstoqueResponse> listarEstoquePorProduto(@PathVariable Long id) {
         List<EstoqueResponse> response = new ArrayList<EstoqueResponse>();
         for (Estoque e : estoque.listarEstoquesPorProdutoId(id))
@@ -52,7 +52,7 @@ public class ControladorEstoque {
         return response;
     }
 
-    @GetMapping("estoqueporarmazem/{id}")
+    @GetMapping("/estoqueporarmazem/{id}")
     List<EstoqueResponse> listarEstoquePorArmazem(@PathVariable Long id) {
         List<EstoqueResponse> response = new ArrayList<EstoqueResponse>();
         for (Estoque e : estoque.listarEstoquesPorArmazem(id))
