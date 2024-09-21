@@ -10,11 +10,11 @@ import lombok.Setter;
 
 @Getter @Setter
 public class EstoqueRequest {
-    @NotNull(message ="Passe a informação do produto")
+    @NotNull(message ="Informe o id do produto")
 	private Long produtoId;
-    @NotNull(message ="Passe a quantidade do produto")
+    @NotNull(message ="Informe a quantidade disponível de estoque do produto")
 	private int quantidade;
-    @NotNull(message ="Passe a informação do estoque")
+    @NotNull(message ="Informe qual o armazem destino")
     private Long armazem_id;
 
 
