@@ -1,9 +1,11 @@
 services:
   db:
-    image: postgres
+    image: postgres:15
     restart: always
     environment:
       - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
 
   discovery:
     build: discovery
@@ -19,6 +21,8 @@ services:
 
   catalogo:
     build: catalogo
+    ports:
+      - "8082:8080"
     depends_on:
       - db
       - message
@@ -27,6 +31,8 @@ services:
   
   estoque:
     build: estoque
+    ports:
+      - "8083:8080"
     depends_on:
       - db
     environment:
@@ -34,6 +40,8 @@ services:
   
   preco:
     build: preco
+    ports:
+      - "8084:8080"
     depends_on:
       - db
     environment:
