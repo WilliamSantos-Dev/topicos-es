@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufage.topicos.estoque.basica.Armazem;
+import br.edu.ufage.topicos.estoque.cadastro.Exceptions.ArmazemNaoEncontradoException;
 import br.edu.ufage.topicos.estoque.repositorio.RepositorioArmazem;
 
 @Service
@@ -35,13 +36,18 @@ public class CadastroArmazem implements InterfaceCadastroArmazem {
 		if(optional.isPresent()) {
 			return optional.get();
 		} else {
-			throw new ObjetoNaoEncontradoException("Não existe produto com o id: " + id);
+			throw new ArmazemNaoEncontradoException("Não existe armazem com o id: " + id);
 		}
     }
 
     @Override
     public void apagarArmazem(Long id) {
-        repositorioArmazem.deleteById(id);
+        Optional<Armazem> optional = repositorioArmazem.findById(id);
+		if(optional.isPresent()) {
+            repositorioArmazem.deleteById(id);
+		} else{
+            throw new ArmazemNaoEncontradoException("Não existe armazem com o id: " + id);
+        }         
     }
 
     @Override

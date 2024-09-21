@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import br.edu.ufage.topicos.estoque.cadastro.ArmazemNaoEncontradoException;
-import br.edu.ufage.topicos.estoque.cadastro.ProdutoNaoEncontradoNoEstoque;
+import br.edu.ufage.topicos.estoque.cadastro.Exceptions.ArmazemNaoEncontradoException;
+import br.edu.ufage.topicos.estoque.cadastro.Exceptions.ProdutoNaoEncontradoNoEstoque;
 import br.edu.ufage.topicos.estoque.fachada.exceção.ProdutoDuplicadoException;
 
 @ControllerAdvice
@@ -50,5 +50,4 @@ public class TratadorDeExcecaoCustomizada {
 		
 		return new ResponseEntity<>(erro, HttpStatus.NOT_FOUND);
 	}
-
 }
