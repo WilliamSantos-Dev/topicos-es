@@ -25,12 +25,12 @@ public class ControladorArmazem {
      @Autowired
     private EstoqueFachada estoque;
 
-    @PostMapping("/armazem")
+    @PostMapping("/estoque/armazem")
     Armazem cadastroArmazem(@Valid @RequestBody ArmazemRequest newObj ) {
         return estoque.adicionarArmazem(newObj.converterParaClasseBasica());
     }
 
-    @GetMapping("/armazem")
+    @GetMapping("/estoque/armazem")
     List<ArmazemResponse> listarArmazem() {
         List<ArmazemResponse> response = new ArrayList<ArmazemResponse>();
 		for(Armazem a : estoque.listarArmazens())
@@ -38,12 +38,12 @@ public class ControladorArmazem {
 		return response;
     }
 
-    @GetMapping("/armazem/{id}")
+    @GetMapping("/estoque/armazem/{id}")
     ArmazemResponse buscarArmazem(@PathVariable Long id) {
         return new ArmazemResponse(estoque.encontrarArmazemId(id));
     }
 
-    @DeleteMapping("/armazem/{id}")
+    @DeleteMapping("/estoque/armazem/{id}")
     void removerArmazem(@PathVariable Long id) {
         estoque.removerArmazem(id);
     }

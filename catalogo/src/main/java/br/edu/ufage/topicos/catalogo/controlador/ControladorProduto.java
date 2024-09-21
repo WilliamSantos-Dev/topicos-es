@@ -28,7 +28,7 @@ public class ControladorProduto {
     @Autowired
     private Publisher publisher;
 
-    @PostMapping("/produto")
+    @PostMapping("/catalogo/produto")
     Produto cadastrarProduto(@Valid @RequestBody ProdutoRequest newObj) {
         Produto produto = catalogo.salvarProduto(newObj.converterParaClasseBasica());
         Event<Long, Integer> event = new Event<>(Event.Type.CREATE, produto.getId(), 2);
@@ -36,7 +36,7 @@ public class ControladorProduto {
         return produto;
     }
 
-    @GetMapping("/produto")
+    @GetMapping("/catalogo/produto")
     List<ProdutoResponse> listarProdutos() {
         List<ProdutoResponse> response = new ArrayList<ProdutoResponse>();
         for (Produto p : catalogo.listarProdutos())
@@ -44,7 +44,7 @@ public class ControladorProduto {
         return response;
     }
 
-    @GetMapping("/produto/{id}")
+    @GetMapping("/catalogo/produto/{id}")
     ProdutoResponse carregarProduto(@PathVariable long id) {
         return new ProdutoResponse(catalogo.encontrarProdutoId(id));
     }

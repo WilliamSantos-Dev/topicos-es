@@ -53,7 +53,7 @@ public class ControladorEstoque {
         return response;
     }
 
-    @GetMapping("/estoque/armazem/{id}")
+    @GetMapping("/estoque/estoqueporarmazem/{id}")
     List<EstoqueResponse> listarEstoquePorArmazem(@PathVariable Long id) {
         List<EstoqueResponse> response = new ArrayList<EstoqueResponse>();
         for(Estoque e : estoque.listarEstoquesPorArmazem(id))

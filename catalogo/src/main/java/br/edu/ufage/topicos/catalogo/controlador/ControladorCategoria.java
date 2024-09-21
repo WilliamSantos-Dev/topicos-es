@@ -31,13 +31,13 @@ public class ControladorCategoria {
 	@Autowired
 	private Publisher publisher;
 
-	@PostMapping("/categoria")
+	@PostMapping("/catalogo/categoria")
 	Categoria cadastrarCategoria(@Valid @RequestBody CategoriaRequest newObj) {
 		Categoria categoria = catalogo.salvarCategoria(newObj.converterParaClasseBasica());
 		return categoria;
 	}
 
-	@GetMapping("/categoria")
+	@GetMapping("/catalogo/categoria")
 	List<CategoriaResponse> listarCategorias() {
 		List<CategoriaResponse> response = new ArrayList<CategoriaResponse>();
 		for (Categoria c : catalogo.listarCategorias())
@@ -45,7 +45,7 @@ public class ControladorCategoria {
 		return response;
 	}
 
-	@GetMapping("/categoria/{id}")
+	@GetMapping("/catalogo/categoria/{id}")
 	CategoriaResponse carregarCategoria(@PathVariable long id) {
 		return new CategoriaResponse(catalogo.encontrarCategoria(id));
 	}
