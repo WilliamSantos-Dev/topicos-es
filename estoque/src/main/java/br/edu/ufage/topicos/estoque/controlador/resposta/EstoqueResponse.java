@@ -2,6 +2,7 @@ package br.edu.ufage.topicos.estoque.controlador.resposta;
 
 import org.modelmapper.ModelMapper;
 
+import br.edu.ufage.topicos.estoque.basica.Armazem;
 import br.edu.ufage.topicos.estoque.basica.Estoque;
 import br.edu.ufage.topicos.estoque.config.SpringApplicationContext;
 import lombok.Getter;
@@ -12,7 +13,7 @@ public class EstoqueResponse {
     private long id;
 	private Long produtoId;
 	private int quantidade;
-    private Long armazem_id;
+    private Armazem armazem;
 
     public EstoqueResponse(Estoque estoque) {
 		ModelMapper modelMapper = (ModelMapper) SpringApplicationContext.getBean("modelMapper");

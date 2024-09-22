@@ -33,7 +33,7 @@ public class PrecoController {
         return cadastroPreco.listarPrecosPorProdutoId(produtoId);
     }
 
-    @GetMapping("/politicas/{politicaId}")
+    @GetMapping("/politicas/busca/{politicaId}")
     public List<Preco> listarPrecosPorPolitica(@PathVariable Long politicaId) {
         return cadastroPreco.listarPrecosPorPolitica(politicaId);
     }

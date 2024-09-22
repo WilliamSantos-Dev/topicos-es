@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufage.topicos.estoque.basica.Armazem;
-import br.edu.ufage.topicos.estoque.basica.Estoque;
 import br.edu.ufage.topicos.estoque.cadastro.Exceptions.ArmazemNaoEncontradoException;
 import br.edu.ufage.topicos.estoque.controlador.requesicao.ArmazemRequest;
-import br.edu.ufage.topicos.estoque.controlador.requesicao.EstoqueRequest;
 import br.edu.ufage.topicos.estoque.controlador.resposta.ArmazemResponse;
-import br.edu.ufage.topicos.estoque.controlador.resposta.EstoqueResponse;
 import br.edu.ufage.topicos.estoque.fachada.EstoqueFachada;
 import jakarta.validation.Valid;
 
@@ -55,11 +51,14 @@ public class ControladorArmazem {
         estoque.removerArmazem(id);
     }
 
-    @PutMapping("/estoques/{id}")
-    public ResponseEntity<EstoqueResponse> atualizarEstoque(@PathVariable Long id, @RequestBody EstoqueRequest request) {
-        Estoque atualizado = estoque.atualizarEstoque(id, request);
-        return ResponseEntity.ok(new EstoqueResponse(atualizado));
+    @PutMapping("/{id}")
+    public ArmazemResponse atualizarArmazem(@PathVariable Long id, @Valid @RequestBody ArmazemRequest armazemRequest) throws ArmazemNaoEncontradoException {
+        Armazem novoArmazem = new Armazem();
+        novoArmazem.setNome(armazemRequest.getNome());
+        novoArmazem.setLocalizacao(armazemRequest.getLocalizacao());
+        
+        Armazem armazemAtualizado = estoque.atualizarArmazem(id, novoArmazem);
+        return new ArmazemResponse(armazemAtualizado);
     }
-
 
 }
