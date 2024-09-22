@@ -2,14 +2,20 @@ package br.edu.ufage.topicos.estoque.fachada;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.ufage.topicos.estoque.basica.Armazem;
 import br.edu.ufage.topicos.estoque.basica.Estoque;
 import br.edu.ufage.topicos.estoque.cadastro.Exceptions.ArmazemNaoEncontradoException;
-import br.edu.ufage.topicos.estoque.controlador.requesicao.EstoqueRequest;
 import br.edu.ufage.topicos.estoque.cadastro.InterfaceCadastroArmazem;
 import br.edu.ufage.topicos.estoque.cadastro.InterfaceCadastroEstoque;
+import br.edu.ufage.topicos.estoque.controlador.requesicao.EstoqueRequest;
 import br.edu.ufage.topicos.estoque.fachada.exceção.EstoqueNaoEncontradoException;
 import br.edu.ufage.topicos.estoque.fachada.exceção.ProdutoDuplicadoException;
 
@@ -80,6 +86,24 @@ public class EstoqueFachada {
     public Estoque atualizarEstoque(Long id, EstoqueRequest request) {
         return cadastroEstoque.atualizarEstoque(id, request);
     }
-   
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    public boolean verificarProdutoNoCatalogo(Long produtoId) {
+        String url = "http://catalogo:8080/catalogo/produto/" + produtoId;
+        
+        try {
+            ResponseEntity<Object> response = restTemplate.getForEntity(url, Object.class);
+            return response.getStatusCode() == HttpStatus.OK;
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                return false;  // Produto não encontrado
+            }
+            throw e;  
+        } catch (ResourceAccessException e) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Serviço de catálogo não disponível", e);
+        }
+    }  
 
 }

@@ -1,6 +1,7 @@
 package br.edu.ufage.topicos.estoque.controlador;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.ufage.topicos.estoque.basica.Armazem;
 import br.edu.ufage.topicos.estoque.basica.Estoque;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,10 +39,16 @@ public class ControladorEstoque {
     Estoque cadastroEstoque(@Valid @RequestBody EstoqueRequest newObj) {
         Estoque estoqueobj = newObj.converterParaClasseBasica();
 
-        Armazem armazem = estoque.encontrarArmazemId(newObj.getArmazem_id());
-        estoqueobj.setArmazem(armazem);
+        boolean produtoExiste = estoque.verificarProdutoNoCatalogo(newObj.getProdutoId());
+        
+        if (produtoExiste) {
+            Armazem armazem = estoque.encontrarArmazemId(newObj.getArmazem_id());
+            estoqueobj.setArmazem(armazem);
 
-        return estoque.adicionarEstoque(estoqueobj);
+            return estoque.adicionarEstoque(estoqueobj);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado no catálogo");
+        }        
     }
 
     @GetMapping()
@@ -76,6 +84,17 @@ public class ControladorEstoque {
     public ResponseEntity<EstoqueResponse> atualizarEstoque(@PathVariable Long id, @RequestBody EstoqueRequest request) {
         Estoque atualizado = estoque.atualizarEstoque(id, request);
         return ResponseEntity.ok(new EstoqueResponse(atualizado));
+    }
+
+    @GetMapping("/verificar-produto/{id}")
+    public ResponseEntity<String> verificarProduto(@PathVariable("id") Long produtoId) {
+        boolean produtoExiste = estoque.verificarProdutoNoCatalogo(produtoId);
+        
+        if (produtoExiste) {
+            return ResponseEntity.ok("Produto existe no catálogo.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado no catálogo.");
+        }
     }
 
 }
