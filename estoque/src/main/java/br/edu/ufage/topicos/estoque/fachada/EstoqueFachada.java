@@ -1,13 +1,16 @@
 package br.edu.ufage.topicos.estoque.fachada;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import br.edu.ufage.topicos.estoque.basica.Armazem;
 import br.edu.ufage.topicos.estoque.basica.Estoque;
+import br.edu.ufage.topicos.estoque.cadastro.Exceptions.ArmazemNaoEncontradoException;
+import br.edu.ufage.topicos.estoque.controlador.requesicao.EstoqueRequest;
 import br.edu.ufage.topicos.estoque.cadastro.InterfaceCadastroArmazem;
 import br.edu.ufage.topicos.estoque.cadastro.InterfaceCadastroEstoque;
+import br.edu.ufage.topicos.estoque.fachada.exceção.EstoqueNaoEncontradoException;
 import br.edu.ufage.topicos.estoque.fachada.exceção.ProdutoDuplicadoException;
 
 @Service
@@ -21,6 +24,10 @@ public class EstoqueFachada {
 
     public Armazem adicionarArmazem(Armazem entity){
         return cadastroArmazem.salvarArmazem(entity);
+    }
+
+    public Armazem atualizarArmazem(Long id, Armazem novoArmazem) throws ArmazemNaoEncontradoException {
+        return cadastroArmazem.atualizarArmazem(id, novoArmazem);
     }
 
     public void removerArmazem(Long id){
@@ -50,7 +57,7 @@ public class EstoqueFachada {
         return cadastroEstoque.salvarEstoque(entity);
     }
 
-    public void removerEstoque(Long id){
+    public void removerEstoque(Long id) throws EstoqueNaoEncontradoException {
         cadastroEstoque.apagarEstoque(id);
     }
 
@@ -68,6 +75,10 @@ public class EstoqueFachada {
 
     public List<Estoque> listarEstoquesPorArmazem(long armazemId){
         return cadastroEstoque.listarEstoquesPorArmazem(armazemId);
+    }
+
+    public Estoque atualizarEstoque(Long id, EstoqueRequest request) {
+        return cadastroEstoque.atualizarEstoque(id, request);
     }
    
 

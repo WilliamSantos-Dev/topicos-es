@@ -21,6 +21,22 @@ public class CadastroArmazem implements InterfaceCadastroArmazem {
     }
 
     @Override
+    public Armazem atualizarArmazem(Long id, Armazem novoArmazem) throws ArmazemNaoEncontradoException {
+        Optional<Armazem> armazemExistente = repositorioArmazem.findById(id);
+        
+        if (armazemExistente.isPresent()) {
+            Armazem armazem = armazemExistente.get();
+            armazem.setNome(novoArmazem.getNome());
+            armazem.setLocalizacao(novoArmazem.getLocalizacao());
+           
+            return repositorioArmazem.save(armazem);
+        } else {
+            throw new ArmazemNaoEncontradoException("Armazém com ID " + id + " não encontrado.");
+        }
+    }
+
+
+    @Override
     public Armazem salvarArmazem(Armazem entity) {
         return repositorioArmazem.save(entity);
     }

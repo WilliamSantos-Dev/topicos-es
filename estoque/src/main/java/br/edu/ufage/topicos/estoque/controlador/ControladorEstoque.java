@@ -4,18 +4,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufage.topicos.estoque.basica.Armazem;
 import br.edu.ufage.topicos.estoque.basica.Estoque;
+import br.edu.ufage.topicos.estoque.cadastro.Exceptions.ArmazemNaoEncontradoException;
+import br.edu.ufage.topicos.estoque.controlador.requesicao.ArmazemRequest;
 import br.edu.ufage.topicos.estoque.controlador.requesicao.EstoqueRequest;
+import br.edu.ufage.topicos.estoque.controlador.resposta.ArmazemResponse;
 import br.edu.ufage.topicos.estoque.controlador.resposta.EstoqueResponse;
 import br.edu.ufage.topicos.estoque.fachada.EstoqueFachada;
+import br.edu.ufage.topicos.estoque.fachada.exceção.EstoqueNaoEncontradoException;
 import jakarta.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -58,6 +65,17 @@ public class ControladorEstoque {
         for (Estoque e : estoque.listarEstoquesPorArmazem(id))
             response.add(new EstoqueResponse(e));
         return response;
+    }
+
+    @DeleteMapping("/{id}")
+    public void removerEstoque(@PathVariable Long id) throws EstoqueNaoEncontradoException {
+        estoque.removerEstoque(id);
+    }
+
+   @PutMapping("/{id}")
+    public ResponseEntity<EstoqueResponse> atualizarEstoque(@PathVariable Long id, @RequestBody EstoqueRequest request) {
+        Estoque atualizado = estoque.atualizarEstoque(id, request);
+        return ResponseEntity.ok(new EstoqueResponse(atualizado));
     }
 
 }
