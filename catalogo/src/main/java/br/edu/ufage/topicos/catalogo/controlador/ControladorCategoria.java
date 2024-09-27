@@ -6,6 +6,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,20 +59,20 @@ public class ControladorCategoria {
 	}
 
 	@DeleteMapping("/{id}")
-    void apagarCategoria(@PathVariable Long id) {
-        catalogo.apagarCategoria(id);
-    }
-	
-	@PutMapping()
-    Categoria atualizarCategoria(@Valid @RequestBody Categoria newCategoria) {
+	void apagarCategoria(@PathVariable Long id) {
+		catalogo.apagarCategoria(id);
+	}
 
-        Categoria categoriaAux = catalogo.encontrarCategoria(newCategoria.getId());
-		if(categoriaAux.getId() == newCategoria.getId()) {
+	@PutMapping()
+	Categoria atualizarCategoria(@Valid @RequestBody Categoria newCategoria) {
+
+		Categoria categoriaAux = catalogo.encontrarCategoria(newCategoria.getId());
+		if (categoriaAux.getId() == newCategoria.getId()) {
 			Categoria categoria_atualizado = catalogo.salvarCategoria(newCategoria);
-            return categoria_atualizado;
+			return categoria_atualizado;
 		} else {
 			throw new CategoriaNaoEncontradoException("Não existe categoria com o id: " + newCategoria.getId());
 		}
-    }
+	}
 
 }

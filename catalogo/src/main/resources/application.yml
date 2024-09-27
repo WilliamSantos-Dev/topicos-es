@@ -20,16 +20,22 @@ spring:
         product-out-0:
           destination: product
           content-type: application/json
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/ecommerce
+          jwk-set-uri: http://keycloak:8080/realms/ecommerce/protocol/openid-connect/certs
 
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
-  logging:
-    level:
-      org.springframework.cloud.stream: DEBUG
-      org.springframework.context: DEBUG
+   
+logging:
+  level:
+    org.springframework.security: DEBUG
 
 eureka:
   client:
@@ -42,15 +48,23 @@ eureka:
     leaseExpirationDurationInSeconds: 5
 
 ---
-server.port: 8080
+server.port: 8089
 spring:
   config.activate.on-profile: docker
   datasource:
     url: jdbc:postgresql://db:5432/postgres
   rabbitmq:
     host: message
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/ecommerce
+          jwk-set-uri: http://keycloak:8080/realms/ecommerce/protocol/openid-connect/certs
 eureka:
   client:
     serviceUrl:
       defaultZone:
         http://discovery:8761/eureka/
+
+logging.level.org.springframework.security: DEBUG
