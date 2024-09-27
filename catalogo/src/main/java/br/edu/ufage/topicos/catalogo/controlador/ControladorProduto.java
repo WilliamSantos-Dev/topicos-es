@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class ControladorProduto {
     private Publisher publisher;
 
     @PostMapping()
+    @PreAuthorize("hasRole('create_product')")
     Produto cadastrarProduto(@Valid @RequestBody ProdutoRequest newObj) {
         Produto produto = catalogo.salvarProduto(newObj.converterParaClasseBasica());
         Event<Long, Integer> event = new Event<>(Event.Type.CREATE, produto.getId(), 2);
@@ -43,6 +45,7 @@ public class ControladorProduto {
     }
 
     @GetMapping()
+    @PreAuthorize("permitAll()")
     List<ProdutoResponse> listarProdutos() {
         List<ProdutoResponse> response = new ArrayList<ProdutoResponse>();
         for (Produto p : catalogo.listarProdutos())
@@ -50,26 +53,29 @@ public class ControladorProduto {
         return response;
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     ProdutoResponse carregarProduto(@PathVariable long id) {
         return new ProdutoResponse(catalogo.encontrarProdutoId(id));
     }
 
+    @PreAuthorize("hasRole('delete_product')")
     @DeleteMapping("/{id}")
     void apagarProduto(@PathVariable Long id) {
         catalogo.apagarProduto(id);
     }
 
+    @PreAuthorize("hasRole('update_product')")
     @PutMapping()
     Produto atualizarProduto(@Valid @RequestBody Produto newProduto) {
 
         Produto produtoAux = catalogo.encontrarProdutoId(newProduto.getId());
-		if(produtoAux.getId() == newProduto.getId()) {
-			Produto produto = catalogo.salvarProduto(newProduto);
+        if (produtoAux.getId() == newProduto.getId()) {
+            Produto produto = catalogo.salvarProduto(newProduto);
             return produto;
-		} else {
-			throw new ObjetoNaoEncontradoException("Não existe produto com o id: " + newProduto.getId());
-		}
+        } else {
+            throw new ObjetoNaoEncontradoException("Não existe produto com o id: " + newProduto.getId());
+        }
     }
 
 }
